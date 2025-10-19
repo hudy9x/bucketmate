@@ -11,11 +11,18 @@
     "dev": "pnpm -r run dev",
     "publish:client": "pnpm --filter @bucketmate/client publish"
   },
-  "keywords": ["monorepo", "s3", "bucketmate"],
+  "keywords": [
+    "monorepo",
+    "s3",
+    "bucketmate"
+  ],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.10.0",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
 }
