@@ -1,0 +1,64 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var _a, _b, _c, _d, _e;
+Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
+const axios_1 = __importDefault(require("axios"));
+const src_1 = require("../src");
+const vitest_1 = require("vitest");
+const AWS_ACCESS_KEY_ID = (_a = process.env.AWS_ACCESS_KEY_ID) !== null && _a !== void 0 ? _a : '';
+const AWS_SECRET_ACCESS_KEY = (_b = process.env.AWS_SECRET_ACCESS_KEY) !== null && _b !== void 0 ? _b : '';
+const AWS_S3_ENDPOINT = (_c = process.env.AWS_S3_ENDPOINT) !== null && _c !== void 0 ? _c : 'https://s3.amazonaws.com';
+const AWS_REGION = (_d = process.env.AWS_REGION) !== null && _d !== void 0 ? _d : 'us-east-1';
+const AWS_BUCKET = (_e = process.env.AWS_BUCKET) !== null && _e !== void 0 ? _e : 'bucketmate-test';
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../.env') });
+(0, vitest_1.describe)('BucketMate Client AWS S3 (real credentials)', () => {
+    const hasKeys = AWS_ACCESS_KEY_ID !== '' && AWS_SECRET_ACCESS_KEY !== '';
+    console.log('hasKey', hasKeys);
+    const runTest = hasKeys ? vitest_1.test : vitest_1.test.skip;
+    const assets = ['test-1.png', 'test-2.png'];
+    runTest('generate presigned URLs for assets in S3', async () => {
+        const config = {
+            provider: 's3',
+            endpoint: AWS_S3_ENDPOINT,
+            region: AWS_REGION,
+            accessKeyId: AWS_ACCESS_KEY_ID,
+            secretAccessKey: AWS_SECRET_ACCESS_KEY,
+            bucket: AWS_BUCKET,
+        };
+        const client = (0, src_1.createBucketmateClient)(config);
+        for (const filename of assets) {
+            const url = await client.generatePresignedUrl({ key: `assets/${filename}` });
+            console.log(url);
+            (0, vitest_1.expect)(typeof url).toBe('string');
+        }
+    });
+    runTest('upload via presigned URL using axios', async () => {
+        const config = {
+            provider: 's3',
+            endpoint: AWS_S3_ENDPOINT,
+            region: AWS_REGION,
+            accessKeyId: AWS_ACCESS_KEY_ID,
+            secretAccessKey: AWS_SECRET_ACCESS_KEY,
+            bucket: AWS_BUCKET,
+        };
+        const client = (0, src_1.createBucketmateClient)(config);
+        const key = `uploads/${Date.now()}-upload.png`;
+        const presignedUrl = await client.generatePresignedUrl({ key });
+        const filePath = path_1.default.resolve(__dirname, '../assets/test-1.png');
+        const data = fs_1.default.readFileSync(filePath);
+        const res = await axios_1.default.put(presignedUrl, data, {
+            headers: { 'Content-Type': 'image/png' },
+        });
+        (0, vitest_1.expect)(res.status).toBeLessThan(300);
+        const keys = await client.listObjects({ prefix: 'uploads/' });
+        (0, vitest_1.expect)(keys).toContain(key);
+        await client.deleteObject({ key });
+        const keysAfter = await client.listObjects({ prefix: 'uploads/' });
+        (0, vitest_1.expect)(keysAfter).not.toContain(key);
+    });
+});

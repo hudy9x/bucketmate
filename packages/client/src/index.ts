@@ -34,4 +34,16 @@ export function createBucketmateClient(config: BucketClientConfig) {
   };
 }
 
+export function createS3Client(config?: any) {
+  const cfg = config ?? {
+    provider: 's3' as const,
+    endpoint: process.env.BUCKETMATE_S3_ENDPOINT ?? 'https://s3.amazonaws.com',
+    region: process.env.BUCKETMATE_S3_REGION ?? 'us-east-1',
+    accessKeyId: process.env.BUCKETMATE_S3_ACCESS_KEY_ID ?? '',
+    secretAccessKey: process.env.BUCKETMATE_S3_SECRET_ACCESS_KEY ?? '',
+    bucket: process.env.BUCKETMATE_S3_BUCKET ?? 'bucket'
+  };
+  return createBucketmateClient(cfg as any);
+}
+
 export type BucketClient = ReturnType<typeof createBucketmateClient>;
