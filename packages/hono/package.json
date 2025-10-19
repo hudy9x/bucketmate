@@ -1,0 +1,46 @@
+{
+  "name": "@bucketmate/hono",
+  "version": "0.1.0",
+  "description": "Hono handler for BucketMate S3-compatible API routes.",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "pnpm run clean && pnpm run build",
+    "prepack": "pnpm run build",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "hono",
+    "s3",
+    "aws",
+    "bucketmate",
+    "handler"
+  ],
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/bucketmate.git",
+    "directory": "packages/hono"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/bucketmate/issues"
+  },
+  "homepage": "https://github.com/your-username/bucketmate#readme",
+  "dependencies": {
+    "hono": "^4.0.0",
+    "@bucketmate/client": "workspace:*"
+  },
+  "type": "module"
+}
