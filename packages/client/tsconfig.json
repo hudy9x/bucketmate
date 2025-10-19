@@ -1,18 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2019",                  // Good mix of modern and compatible JS
-    "module": "ESNext",                  // Use ES modules
-    "declaration": true,                 // Generate .d.ts files for consumers
-    "declarationDir": "dist",            // Output type definitions to dist
-    "outDir": "dist",                    // Output JS files to dist
-    "rootDir": "src",                    // Source code location
-    "strict": true,                      // Enable all strict type-checking
-    "esModuleInterop": true,             // Easier import of CommonJS modules
-    "moduleResolution": "Node",          // Node-style module resolution
-    "skipLibCheck": true,                // Speeds up build by skipping type checks for dependencies
-    "forceConsistentCasingInFileNames": true, // Ensures consistent imports
-    "sourceMap": true                    // Include source maps for debugging
+    "target": "ES2017",
+    "module": "commonjs",
+    "strict": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test"]
+  "include": ["src/**/*", "test/**/*"]
 }

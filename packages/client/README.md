@@ -1,31 +1,26 @@
-# @bucketmate/client
+# BucketMate Client
 
-S3 client package for BucketMate.
-
-## Installation
-
-```bash
-npm install @bucketmate/client
-```
+A minimal, extensible S3-compatible client macro with a factory + strategy adapters.
 
 ## Usage
 
-```typescript
-import { createS3Client } from '@bucketmate/client';
+Example (Node/Express/Hono/Next.js in a few lines):
 
-// Create an S3 client
-createS3Client();
+```ts
+import { createBucketmateClient } from '@bucketmate/client';
+
+const client = createBucketmateClient({
+  provider: 's3',
+  endpoint: 'https://s3.amazonaws.com',
+  region: 'us-east-1',
+  accessKeyId: '...',
+  secretAccessKey: '...',
+  bucket: 'my-bucket'
+});
 ```
 
-## Development
-
-```bash
-# Build the package
-pnpm run build
-
-# Watch for changes
-pnpm run dev
-
-# Clean build artifacts
-pnpm run clean
-```
+## Methods
+- `generatePresignedUrl({ key })` for PUT uploads
+- `deleteObject({ key })`
+- `listObjects({ prefix? })`
+- `getObjectUrl({ key })`

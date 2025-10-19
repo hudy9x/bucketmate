@@ -1,10 +1,37 @@
-/**
- * Creates an S3 client instance
- * @returns A console.log function for demonstration
- */
-export function createS3Client(): void {
-  console.log('S3 Client created successfully');
+import { S3Adapter } from './adapters/s3';
+import { DoAdapter } from './adapters/do';
+import { R2Adapter } from './adapters/r2';
+import { MinioAdapter } from './adapters/minio';
+import { MockAdapter } from './adapters/mock';
+import { BucketClientConfig, AdapterInterface, Provider } from './types';
+
+export function createBucketmateClient(config: BucketClientConfig) {
+  let adapter: AdapterInterface;
+  switch (config.provider) {
+    case 's3':
+      adapter = new S3Adapter(config);
+      break;
+    case 'do':
+      adapter = new DoAdapter(config);
+      break;
+    case 'r2':
+      adapter = new R2Adapter(config);
+      break;
+    case 'minio':
+      adapter = new MinioAdapter(config);
+      break;
+    case 'mock':
+      adapter = new MockAdapter(config);
+      break;
+    default:
+      throw new Error('Unsupported provider');
+  }
+  return {
+    generatePresignedUrl: (p: { key: string }) => adapter.generatePresignedUrl(p),
+    deleteObject: (p: { key: string }) => adapter.deleteObject(p),
+    listObjects: (p?: { prefix?: string }) => adapter.listObjects(p as any),
+    getObjectUrl: (p: { key: string }) => adapter.getObjectUrl(p),
+  };
 }
 
-// Export the main function as default
-export default createS3Client;
+export type BucketClient = ReturnType<typeof createBucketmateClient>;

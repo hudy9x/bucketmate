@@ -13,8 +13,13 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "pnpm run clean && pnpm run build",
     "prepack": "pnpm run build",
-    "test": "echo \"No tests specified\"",
+    "test": "vitest run",
     "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "axios": "^1.12.2",
+    "dotenv": "^16.0.0",
+    "vitest": "^1.0.0"
   },
   "keywords": [
     "s3",
@@ -36,5 +41,9 @@
   "bugs": {
     "url": "https://github.com/your-username/bucketmate/issues"
   },
-  "homepage": "https://github.com/your-username/bucketmate#readme"
+  "homepage": "https://github.com/your-username/bucketmate#readme",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.913.0",
+    "@aws-sdk/s3-request-presigner": "^3.913.0"
+  }
 }
