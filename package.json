@@ -1,0 +1,20 @@
+{
+  "name": "bucketmate",
+  "version": "1.0.0",
+  "description": "BucketMate monorepo",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r run build",
+    "clean": "pnpm -r run clean",
+    "test": "pnpm -r run test",
+    "dev": "pnpm -r run dev",
+    "publish:client": "pnpm --filter @bucketmate/client publish"
+  },
+  "keywords": ["monorepo", "s3", "bucketmate"],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "workspaces": [
+    "packages/*"
+  ]
+}

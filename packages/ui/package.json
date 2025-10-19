@@ -1,0 +1,16 @@
+{
+  "name": "@bucketmate/ui",
+  "version": "1.0.0",
+  "description": "UI components for BucketMate",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "bucketmate"
+  ],
+  "author": "",
+  "license": "ISC"
+}
