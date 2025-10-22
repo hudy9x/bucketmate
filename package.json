@@ -6,12 +6,14 @@
   "scripts": {
     "demo": "pnpm -F demo dev",
     "build": "pnpm -r run build",
-    "build-packages": "pnpm -F @bucketmate/hono build; pnpm -F @bucketmate/client build",
     "clean": "pnpm -r run clean",
     "test": "pnpm -r run test",
     "dev": "pnpm -r run dev",
 
+    "build-packages": "pnpm -F @bucketmate/hono build; pnpm -F @bucketmate/client build",
+
     "publish:client": "pnpm --filter @bucketmate/client publish",
+    "publish:hono": "pnpm --filter @bucketmate/hono publish",
 
     "demo-next": "pnpm -F demo-nextjs dev --port 3003",
     "demo-hono": "pnpm -F demo-honojs dev"

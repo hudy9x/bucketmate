@@ -29,6 +29,12 @@ pnpm run dev
 
 ## Publishing
 
+Run build packages/client and packages/hono first
+
+```bash
+pnpm build-packages
+```
+
 To publish the client package to npm:
 
 ```bash
