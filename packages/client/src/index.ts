@@ -5,7 +5,23 @@ import { MinioAdapter } from './adapters/minio';
 import { MockAdapter } from './adapters/mock';
 import { BucketClientConfig, AdapterInterface, Provider } from './types';
 
+function isNotPlainObject(value: unknown) {
+  return !(
+    typeof value === 'object' &&
+    value !== null &&
+    value.constructor === Object
+  );
+}
+
 export function createBucketmateClient(config: BucketClientConfig) {
+  if (!config || Object.keys(config).length === 0) {
+    throw new Error("Bucketmate: missing configuration")
+  }
+
+  if (isNotPlainObject(config)) {
+    throw new Error("Bucketmate: configuration must be an object")
+  }
+
   let adapter: AdapterInterface;
   switch (config.provider) {
     case 's3':

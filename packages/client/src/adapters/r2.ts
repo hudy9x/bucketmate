@@ -8,6 +8,16 @@ export class R2Adapter implements AdapterInterface {
 
   constructor(config: BucketClientConfig) {
     this.config = config;
+    console.log('config', {
+      region: config.region,
+      credentials: {
+        accessKeyId: config.accessKeyId,
+        secretAccessKey: config.secretAccessKey,
+      },
+      endpoint: config.endpoint,
+      forcePathStyle: true,
+    })
+
     this.client = new S3Client({
       region: config.region,
       credentials: {
@@ -17,6 +27,7 @@ export class R2Adapter implements AdapterInterface {
       endpoint: config.endpoint,
       forcePathStyle: true,
     });
+
   }
 
   async generatePresignedUrl({ key }: { key: string }): Promise<string> {

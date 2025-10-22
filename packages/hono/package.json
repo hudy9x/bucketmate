@@ -4,9 +4,10 @@
   "description": "Hono handler for BucketMate S3-compatible API routes.",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "src/index.d.ts",
   "files": [
     "dist/**/*",
+    "src/**/*",
     "README.md"
   ],
   "scripts": {

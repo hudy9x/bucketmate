@@ -18,9 +18,16 @@ export function createBucketmateHonoHandler(config: any) {
       if (typeof key !== 'string' || key.length === 0) {
         return c.json({ error: 'key is required' }, 400);
       }
-      const url = await client.generatePresignedUrl({ key });
-      return c.json({ url });
+      const presignedUrl = await client.generatePresignedUrl({ key });
+      const fileUrl = client.getObjectUrl({ key });
+      // Return richer payload for the client to render previews
+      return c.json({
+        presignedUrl,
+        fileUrl,
+        name: key,
+      });
     } catch (e) {
+      console.log(e)
       return c.json({ error: 'internal_error' }, 500);
     }
   });
