@@ -25,6 +25,7 @@ export function createBucketmateClient(config: BucketClientConfig) {
   let adapter: AdapterInterface;
   switch (config.provider) {
     case 's3':
+      config.endpoint = '';
       adapter = new S3Adapter(config);
       break;
     case 'do':

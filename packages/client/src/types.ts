@@ -2,7 +2,7 @@ export type Provider = 's3' | 'do' | 'r2' | 'minio' | 'mock';
 
 export interface BucketClientConfig {
   provider: Provider;
-  endpoint: string;
+  endpoint?: string;
   region?: string;
   accessKeyId: string;
   secretAccessKey: string;

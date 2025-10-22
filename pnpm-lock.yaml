@@ -47,9 +47,15 @@ importers:
 
   src/honojs:
     dependencies:
+      '@bucketmate/hono':
+        specifier: workspace:*
+        version: link:../../packages/hono
       '@hono/node-server':
         specifier: ^1.19.5
         version: 1.19.5(hono@4.10.1)
+      dotenv:
+        specifier: ^16.6.1
+        version: 16.6.1
       hono:
         specifier: ^4.10.1
         version: 4.10.1

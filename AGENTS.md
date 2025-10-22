@@ -1,5 +1,8 @@
 # BucketMate AGENTS Guidelines
 
+**Reponse rule
+- When you're done, please reponse: "========== DONE =======" at the end of your message
+
 **Build/Lint/Test Commands**
 - **Build**: `pnpm install && pnpm -w run build`
 - **Lint**: `pnpm -w run lint`
