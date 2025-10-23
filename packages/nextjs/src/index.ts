@@ -1,6 +1,6 @@
 import { createBucketmateClient } from '@bucketmate/client'
 import type { BucketClient, BucketClientConfig } from '@bucketmate/client'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { BucketmateNextError } from './errors'
 import { listObjectsAction, createPresignedUrlAction, deleteObjectAction } from './functions'
 
@@ -8,15 +8,15 @@ import { listObjectsAction, createPresignedUrlAction, deleteObjectAction } from 
  * Returns a Next.js route handler for a single provider instance.
  * Only 'r2' is supported in this single-provider version.
  */
-interface Params {
+interface AppRouteParams {
   params: {
-    slug: string[];
+    slug?: string | string[]
   }
 }
 
 type BucketmateRouteAction = {
   methods: ReadonlyArray<string>
-  handler: (req: NextRequest, client: BucketClient) => Promise<unknown>
+  handler: (req: Request, client: BucketClient) => Promise<unknown>
 }
 
 const ACTIONS: Record<string, BucketmateRouteAction> = {
@@ -34,15 +34,13 @@ const ACTIONS: Record<string, BucketmateRouteAction> = {
   }
 }
 
-export function createBucketmateNextHandler(config: BucketClientConfig): (req: NextRequest, params: Params) => Promise<NextResponse> {
-  const client: BucketClient = createBucketmateClient(config as any)
+export function createBucketmateNextHandler(config: BucketClientConfig): (req: Request, params: AppRouteParams) => Promise<NextResponse> {
+  const client: BucketClient = createBucketmateClient(config)
 
-  async function handleRequest(req: NextRequest, params: Params) {
+  async function handleRequest(req: Request, params: AppRouteParams) {
     const rawSlug = params?.params?.slug
     const slugSegments = typeof rawSlug === 'string' ? [rawSlug] : Array.isArray(rawSlug) ? rawSlug : []
     const actionKey = slugSegments[0]
-
-    console.log("action key", actionKey)
 
     if (!actionKey) {
       throw new BucketmateNextError('Not Found', 404)
@@ -61,7 +59,7 @@ export function createBucketmateNextHandler(config: BucketClientConfig): (req: N
     return action.handler(req, client)
   }
 
-  return async (req: NextRequest, params: Params) => {
+  return async (req: Request, params: AppRouteParams) => {
     try {
       const result = await handleRequest(req, params)
       return NextResponse.json(result ?? {})

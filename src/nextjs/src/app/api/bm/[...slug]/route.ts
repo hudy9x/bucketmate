@@ -19,8 +19,6 @@ const cfg: BucketClientConfig = {
 
 const bucketmateHandler = createBucketmateNextHandler(cfg);
 
-const normalize = (ctx: any) => ({ params: { slug: typeof ctx?.params?.slug === 'string' ? [ctx.params.slug] : Array.isArray(ctx?.params?.slug) ? ctx.params.slug : [] } });
+const handler = bucketmateHandler;
 
-const handle = (req: Request, ctx: any) => bucketmateHandler(req as any, normalize(ctx) as any);
-
-export { handle as GET, handle as POST, handle as DELETE };
+export { handler as GET, handler as POST, handler as DELETE };
