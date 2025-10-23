@@ -3,7 +3,7 @@ import { DoAdapter } from './adapters/do';
 import { R2Adapter } from './adapters/r2';
 import { MinioAdapter } from './adapters/minio';
 import { MockAdapter } from './adapters/mock';
-import { BucketClientConfig, AdapterInterface, Provider } from './types';
+import { BucketClientConfig as BucketClientConfigType, AdapterInterface } from './types';
 
 function isNotPlainObject(value: unknown) {
   return !(
@@ -12,6 +12,8 @@ function isNotPlainObject(value: unknown) {
     value.constructor === Object
   );
 }
+
+export type BucketClientConfig = BucketClientConfigType
 
 export function createBucketmateClient(config: BucketClientConfig) {
   if (!config || Object.keys(config).length === 0) {
@@ -64,3 +66,4 @@ export function createS3Client(config?: any) {
 }
 
 export type BucketClient = ReturnType<typeof createBucketmateClient>;
+

@@ -4,7 +4,7 @@
 - When you're done, please reponse: "========== DONE =======" at the end of your message
 
 **Build/Lint/Test Commands**
-- **Build**: `pnpm install && pnpm -w run build`
+- **Build**: `pnpm install && pnpm build-packages`
 - **Lint**: `pnpm -w run lint`
 - **Test**: `pnpm -w run test`
 - **Single Test**: For a package (e.g. @bucketmate/client): `pnpm -F @bucketmate/client run test -- -t "<TestName>"` (Jest) or `--testNamePattern "<TestName>"` (Vitest). Adapt to the runner in use.
