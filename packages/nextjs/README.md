@@ -24,50 +24,29 @@ This package exposes a small API to create a route handler that dispatches to th
 ### Quick example (TypeScript)
 ```ts
 // File: apps/nextjs-app/app/api/bucketmate/route.ts
-import { createBucketmateNextHandler } from '@bucketmate/nextjs';
+import { createBucketmateNextHandler, toNextJsHandler } from '@bucketmate/nextjs';
+import type { BucketClientConfig } from '@bucketmate/client';
 
-const handler = createBucketmateNextHandler({
-  r2: {
-    provider: 'r2',
-    endpoint: process.env.R2_ENDPOINT,
-    region: process.env.R2_REGION,
-    bucket: process.env.R2_BUCKET_NAME,
-    accessKeyId: process.env.R2_ACCESS_KEY,
-    secretAccessKey: process.env.R2_SECRET_KEY,
-  },
-  minio: {
-    provider: 'minio',
-    endpoint: process.env.MINIO_ENDPOINT,
-    region: process.env.MINIO_REGION,
-    bucket: process.env.MINIO_BUCKET_NAME,
-    accessKeyId: process.env.MINIO_ACCESS_KEY,
-    secretAccessKey: process.env.MINIO_SECRET_KEY,
-  },
-  do: {
-    provider: 'do',
-    endpoint: process.env.DO_ENDPOINT,
-    region: process.env.DO_REGION,
-    bucket: process.env.DO_BUCKET_NAME,
-    accessKeyId: process.env.DO_ACCESS_KEY,
-    secretAccessKey: process.env.DO_SECRET_KEY,
-  },
-  s3: {
-    provider: 's3',
-    endpoint: process.env.AWS_S3_ENDPOINT,
-    region: process.env.AWS_REGION,
-    bucket: process.env.AWS_BUCKET,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  }
-});
+const readEnv = (k: string, f?: string) => {
+  const v = process.env[k];
+  if (typeof v === 'string' && v.length) return v;
+  if (f !== undefined) return f;
+  throw new Error(`BucketmateNext: missing env ${k}`);
+};
 
-export async function GET(req: Request) {
-  return handler(req)
-}
+const cfg: BucketClientConfig = {
+  provider: 'r2',
+  endpoint: readEnv('R2_ENDPOINT'),
+  region: readEnv('R2_REGION', 'auto'),
+  bucket: readEnv('R2_BUCKET_NAME'),
+  accessKeyId: readEnv('R2_ACCESS_KEY'),
+  secretAccessKey: readEnv('R2_SECRET_KEY')
+};
 
-export async function POST(req: Request) {
-  return handler(req)
-}
+// wrap the handler for Next.js App Router and export method handlers
+const handler = toNextJsHandler(createBucketmateNextHandler(cfg));
+
+export const { GET, POST, DELETE } = handler;
 ```
 
 - The above demonstrates wiring for four providers. You can tailor the env vars or migrate to a config object from your own runtime.

@@ -85,4 +85,12 @@ export function createBucketmateNextHandler(config: BucketClientConfig): (req: R
   }
 }
 
-export default { createBucketmateNextHandler }
+export function toNextJsHandler(handler: (req: Request, params: AppRouteParams) => Promise<NextResponse>) {
+  return {
+    GET: async (req: Request, params: AppRouteParams | Promise<AppRouteParams>) => handler(req, await params),
+    POST: async (req: Request, params: AppRouteParams | Promise<AppRouteParams>) => handler(req, await params),
+    DELETE: async (req: Request, params: AppRouteParams | Promise<AppRouteParams>) => handler(req, await params)
+  } as const
+}
+
+export default { createBucketmateNextHandler, toNextJsHandler }

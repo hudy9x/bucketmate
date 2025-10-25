@@ -9,7 +9,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    }
+    },
+    "./dist/index.js": "./dist/index.js"
   },
   "dependencies": {
     "@bucketmate/client": "workspace:*",

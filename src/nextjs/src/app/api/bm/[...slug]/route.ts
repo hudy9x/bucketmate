@@ -1,4 +1,4 @@
-import { createBucketmateNextHandler } from '@bucketmate/nextjs';
+import { createBucketmateNextHandler, toNextJsHandler } from '@bucketmate/nextjs';
 import type { BucketClientConfig } from '@bucketmate/client';
 
 const readEnv = (k: string, f?: string) => {
@@ -17,8 +17,6 @@ const cfg: BucketClientConfig = {
   secretAccessKey: readEnv('R2_SECRET_KEY')
 };
 
-const bucketmateHandler = createBucketmateNextHandler(cfg);
+const handler = toNextJsHandler(createBucketmateNextHandler(cfg));
 
-const handler = bucketmateHandler;
-
-export { handler as GET, handler as POST, handler as DELETE };
+export const { GET, POST, DELETE } = handler;
